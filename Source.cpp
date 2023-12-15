@@ -1,3 +1,7 @@
+//HW6 by Alexander Segarra
+//NETID: asegarra 
+// SUID 747437414
+
 //CSE674 HW6  Due: 11:59PM, Dec. 12 Thursday
 #include <iostream>
 using namespace std;
@@ -21,38 +25,35 @@ public:
 
 
 	void R_rotate(node* p) {//R-rotate at node pointed by p
-		node* newRoot = p->Lchild;
+		node* newPar = p->Lchild;
 
-		p->Lchild = newRoot->Rchild;
+		p->Lchild = newPar->Rchild;
 
 
 
-		if (newRoot->Rchild != nullptr) {   //update parent of Rchild of newRoot
-			newRoot->Rchild->parent = p;
-			newRoot->Lchild->Is_Lchild = true;
+		if (newPar->Rchild != nullptr) {   //update parent of Rchild of newPar
+			newPar->Rchild->parent = p;
+			newPar->Lchild->Is_Lchild = true;
 		}
 
-		newRoot->parent = p->parent;		//newRoots parent is whatever p's parent was
+		newPar->parent = p->parent;		//newPar parent is whatever p's parent was
 
 		if (p->parent == nullptr) {
-			root = newRoot;
+			root = newPar;
 
 		}
-		else if (p == p->parent->Rchild) { //if p is the right child of its parent, make newRoot right child of parent 
-			p->parent->Rchild = newRoot;
-			newRoot->Is_Lchild = false;
+		else if (p == p->parent->Rchild) { //if p is the right child of its parent, make newPar right child of parent 
+			p->parent->Rchild = newPar;
+			newPar->Is_Lchild = false;
 		}
 		else {
-			p->parent->Lchild = newRoot; //make newRoot left child of parent
-			newRoot->Is_Lchild = true;
+			p->parent->Lchild = newPar; //make newPar left child of parent
+			newPar->Is_Lchild = true;
 		}
 
-		newRoot->Rchild = p; // make p the right child of new root
-		p->parent = newRoot; //update p's parent
+		newPar->Rchild = p; // make p the right child of new root
+		p->parent = newPar; //update p's parent
 
-		// Color adjustments
-		//p->color = true; // Set p as Red
-		//newRoot->color = false; // Set newRoot as Black
 
 
 		p->Is_Lchild = false;
@@ -87,38 +88,35 @@ public:
 	void L_rotate(node* p) { //L-rotate at node pointed by p 
 		//R_rotate and L_rotate will be called by add_node, delete_node, delete_1, delete_2A, delete_2B, and delete_3.
 
-		node* newRoot = p->Rchild;
+		node* newPar = p->Rchild;
 
-		p->Rchild = newRoot->Lchild;
+		p->Rchild = newPar->Lchild;
 
-		if (newRoot->Lchild != nullptr) {   //update parent of Lchild of newRoot
-			newRoot->Lchild->parent = p;
-			newRoot->Lchild->Is_Lchild = true;
+		if (newPar->Lchild != nullptr) {   //update parent of Lchild of newPar
+			newPar->Lchild->parent = p;
+			newPar->Lchild->Is_Lchild = true;
 		}
 
-		newRoot->parent = p->parent;		//newRoots parent is whatever p's parent was
+		newPar->parent = p->parent;		//newPar parent is whatever p's parent was
 
 		if (p->parent == nullptr) {
-			root = newRoot;
+			root = newPar;
 		}
-		else if (p == p->parent->Lchild) { //if p is the left child of its parent, make newRoot left child of parent 
-			p->parent->Lchild = newRoot;
-			newRoot->Is_Lchild = true;
+		else if (p == p->parent->Lchild) { //if p is the left child of its parent, make newPar left child of parent 
+			p->parent->Lchild = newPar;
+			newPar->Is_Lchild = true;
 		}
 		else {
-			p->parent->Rchild = newRoot; //make newRoot right child of parent
-			newRoot->Is_Lchild = false;
+			p->parent->Rchild = newPar; //make newPar right child of parent
+			newPar->Is_Lchild = false;
 
 		}
 
-		newRoot->Lchild = p; // make p the left child of new root
-		p->parent = newRoot; //update p's parent
+		newPar->Lchild = p; // make p the left child of new root
+		p->parent = newPar; //update p's parent
 
 
-		// Color adjustments
-		//p->color = true; // Set p as Red
-		//newRoot->color = false; // Set newRoot as Black
-
+		
 		// Update Is_Lchild for the children of p, if they exist
 		p->Is_Lchild = true;
 		if (p->Rchild != nullptr) {
@@ -277,7 +275,7 @@ public:
 
 	void delete_1(node* p, bool b) {
 		//Case 1 of delete_node; p points to the parent of double black node; b is true if double black is the left child of its parent; else b is false.
-		cout << "In delete_1!!" << endl;
+		
 
 		node* sibling = (b) ? p->Rchild : p->Lchild; // Get sibling based on boolean b
 
@@ -334,8 +332,9 @@ public:
 
 	void delete_2B(node* p, bool b) {
 		//Case 2B of delete_node; p points to the parent of double black node; b is true if double black is the left child of its parent; else b is false.
-		cout << "In delete_2B!!" << endl;
-		node* sibling = (b) ? p->Rchild : p->Lchild; // Get sibling based on boolean b
+		
+		node* sibling = (b) ? p->Rchild : p->Lchild; // find sibling
+
 
 		// Change sibling to red
 		sibling->color = true; 
@@ -349,7 +348,7 @@ public:
 
 	void delete_3(node* p, bool b) {
 		//Case 3 of delete_node; p points to the parent of double black node; b is true if double black is the left child of its parent; else b is false.
-		cout << "In delete_3!!" << endl;
+		
 
 		node* sibling = b ? p->Rchild : p->Lchild;
 		node* newDB =nullptr;
@@ -371,7 +370,9 @@ public:
 		p->color = true; 
 
 		
-		node* siblingOfNewDB = (newDB->Is_Lchild) ? newDB->parent->Rchild : newDB->parent->Lchild;
+		node* siblingOfNewDB = (newDB->Is_Lchild) ? newDB->parent->Rchild : newDB->parent->Lchild; // find sibling
+
+
 		if (siblingOfNewDB->color) {		//sibling is red, case 3
 			delete_3(newDB->parent, newDB->Is_Lchild);
 		}
@@ -398,9 +399,9 @@ public:
 
 	void delete_2A(node* p, bool b) {
 		//Case 2A of delete_node; p points to the parent of double black node; b is true if double black is the left child of its parent; else b is false.
-		cout << "In delete_2a!!" << endl;
+		
 
-		node* sibling = (b) ? p->Rchild : p->Lchild; // Get sibling based on boolean b
+		node* sibling = (b) ? p->Rchild : p->Lchild; // find sibling
 
 		// Change sibling to red
 		sibling->color = true;
@@ -487,7 +488,6 @@ public:
 				target->parent->Rchild = nullptr;
 			}
 			delete target;
-			cout << "Finished trivial case 1" << endl;
 			return;
 		}
 
@@ -503,7 +503,7 @@ public:
 			}
 			target->Lchild->color = false; // Make it black
 			delete target;
-			cout << "Finished trivial case 2" << endl;
+			
 			return;
 		}
 		if (target->Rchild != nullptr && target->Rchild->color && target->Lchild == nullptr && target->Rchild->Lchild == nullptr && target->Rchild->Rchild == nullptr) {
@@ -515,9 +515,9 @@ public:
 				target->parent->Rchild = target->Rchild;
 				target->parent->Rchild->Is_Lchild = false;
 			}
-			target->Rchild->color = false; // Make it black
+			target->Rchild->color = false; // Make  black
 			delete target;
-			cout << "Finished trivial case 2" << endl;
+			
 			return;
 		}
 
@@ -531,7 +531,6 @@ public:
 			// Case 1: Successor, right child is red
 			
  			if (target->Rchild != nullptr && target->Rchild->color) {				
-				cout << "chose succ" << endl;
 				replacement = target->Rchild;
 				while (replacement->Lchild != nullptr) {
 					replacement = replacement->Lchild;
@@ -543,7 +542,7 @@ public:
 			// Case 2: Predecessor, left child is red
 
 			else if (target->Lchild != nullptr && target->Lchild->color) {
-				cout << "chose pred" << endl;
+				
 				replacement = target->Lchild;
 				while (replacement->Rchild != nullptr) {
 					replacement = replacement->Rchild;
@@ -554,9 +553,10 @@ public:
 			// Case 3: Predecessor, both children are black or leaf
 			else {
 				if (target->Lchild == nullptr && target->Rchild == nullptr) {																//if target is a leaf and black
-					cout << "chose pred" << endl;
+					
 					node* parent = target->parent;
-					node* sibling = (target == parent->Lchild) ? parent->Rchild : parent->Lchild;
+					node* sibling = (target == parent->Lchild) ? parent->Rchild : parent->Lchild; //find sibling
+
 					if (target == parent->Lchild) {
 						target->Is_Lchild = true;
 					}
@@ -637,7 +637,7 @@ public:
 
 				if (!replacement->color) {													// if replacement node is going to be double black
 					node* parent = replacement->parent;
-					node* sibling = (replacement->Is_Lchild) ? parent->Rchild : parent->Lchild;
+					node* sibling = (replacement->Is_Lchild) ? parent->Rchild : parent->Lchild; //find sibling
 
 
 					if (sibling != nullptr && sibling->color) {		//if doble black nodes sibling is red, case 3
@@ -666,7 +666,7 @@ public:
 
 				}
 				else {
-					cout << "Trivial case" << endl;
+					
 				}
 			}
 
@@ -676,6 +676,7 @@ public:
 
 			else {
 				// Replacement node has one child
+
 				node* child = replacement->Lchild != nullptr ? replacement->Lchild : replacement->Rchild;
 
 				child->parent = replacement->parent;
@@ -687,9 +688,9 @@ public:
 				}
 
 				if (!replacement->color) {
-					// If the replacement is black, need to fix double black issue
-					if (child->color) {
-						// If child is red, simply recolor it to black
+					
+					if (child->color) {			//if red change to black
+						
 						child->color = false;
 					}
 					else {
@@ -754,6 +755,7 @@ public:
 
 //For the following, during traveral, print (value, color, Is_Lchild) of each node.
 void InorderPrint(node* p) {//Print all nodes of a subtree rooted at node pointed by p; Example: (7 R 1) (12 B 0) (14 R 1) ...
+	
 	if (p != nullptr) {
 		InorderPrint(p->Lchild);
 		cout << "(" << p->value << " ";
@@ -776,92 +778,30 @@ int main() {
 	tree T1;
 
 	
-	T1.add_node(45);
-	T1.add_node(15);
-	T1.add_node(75);
-	T1.add_node(5);
-	T1.add_node(25);
-	T1.add_node(55);
-	T1.add_node(95);
-	T1.add_node(1);
-	T1.add_node(10);
-	T1.add_node(20);
-	T1.add_node(30);
-	T1.add_node(50);
 	T1.add_node(60);
+	T1.add_node(30);
 	T1.add_node(80);
-	T1.add_node(100);
-	T1.add_node(3);
-	T1.add_node(7);
-	T1.add_node(12);
-	T1.add_node(18);
-	T1.add_node(28);
-	T1.add_node(35);
-	T1.add_node(48);
-	T1.add_node(58);
+	T1.add_node(20);
+	T1.add_node(40);
 	T1.add_node(70);
+	T1.add_node(90);
+	T1.add_node(10);
+	T1.add_node(25);
+	T1.add_node(35);
+	T1.add_node(45);
+	T1.add_node(65);
+	T1.add_node(75);
 	T1.add_node(85);
-	T1.add_node(105);
-	T1.add_node(110);
-	T1.add_node(115);
-	T1.add_node(120);
-	T1.add_node(125);
-	T1.add_node(130);
-	T1.add_node(135);
-	T1.add_node(140);
-	T1.add_node(145);
-	T1.add_node(150);
-	T1.add_node(155);
-	T1.add_node(160);
-	T1.add_node(165);
-	T1.add_node(170);
-	T1.add_node(175);
+	T1.add_node(95);
 
-	T1.delete_node(45);
-	T1.delete_node(75);
-	T1.delete_node(25);
-	T1.delete_node(55);
+	T1.delete_node(60);   
+	T1.delete_node(20);   
+	T1.delete_node(80);   
+	T1.delete_node(10);   
 	T1.delete_node(95);
-	T1.delete_node(15);
-	T1.delete_node(5);
-	T1.delete_node(100);
-	T1.delete_node(80);
-	T1.delete_node(60);
-	T1.delete_node(20);
-	T1.delete_node(10);
-	T1.delete_node(1);
-	T1.delete_node(3);
-	T1.delete_node(7);
-	T1.delete_node(12);
-	T1.delete_node(18);
-	T1.delete_node(28);
-	T1.delete_node(35);
-	T1.delete_node(48);
-	T1.delete_node(58);
-	T1.delete_node(70);
-	T1.delete_node(85);
-	T1.delete_node(165);
-	T1.delete_node(105);
-	T1.delete_node(110);
-	T1.delete_node(115);
-	T1.delete_node(120);
-	T1.delete_node(125);
-	T1.delete_node(130);
-	T1.delete_node(135);
-	T1.delete_node(140);
-	T1.delete_node(145);
-	T1.delete_node(150);
-	T1.delete_node(155);
-	T1.delete_node(160);/*
-	
-	T1.delete_node(170);
-	T1.delete_node(175);*/
-
 	
 	T1.InorderPrint(T1.root);
-	cout << endl <<"root is : " << T1.root->value << endl;
 
-	cout << endl;
 
 	return 0;
 }
